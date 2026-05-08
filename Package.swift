@@ -22,10 +22,7 @@ let package = Package(
         .testTarget(
             name: "TMSileroVADTests",
             dependencies: ["TMSileroVAD"],
-            path: "Tests/TMSileroVADTests",
-            exclude: [
-                "Helpers/.gitkeep"
-            ]
+            path: "Tests/TMSileroVADTests"
         )
     ]
 )
