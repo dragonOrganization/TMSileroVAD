@@ -7,3 +7,4 @@ DerivedData/
 Pods/
 xcuserdata/
 *.hmap
+.claude/
