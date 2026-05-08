@@ -15,8 +15,7 @@ let package = Package(
             name: "TMSileroVAD",
             path: "Sources/TMSileroVAD",
             exclude: [
-                "Internal/.gitkeep",
-                "Resources/.gitkeep"
+                "Internal/.gitkeep"
             ],
             resources: [
                 .copy("Resources/silero-vad-unified-v6.0.0.mlmodelc"),
