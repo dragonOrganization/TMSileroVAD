@@ -1,6 +1,6 @@
 import Foundation
 
 public protocol TMSileroVADDelegate: AnyObject {
-    /// Called for every chunk processed, on the queue configured in `SileroVADConfig.callbackQueue`.
-    func sileroVAD(_ vad: TMSileroVAD, didEmit event: TMSileroVAD.SileroVADEvent)
+    /// Called for every chunk processed, on the queue configured in `TMSileroVADConfig.callbackQueue`.
+    func sileroVAD(_ vad: TMSileroVAD, didEmit event: TMSileroVADEvent)
 }
