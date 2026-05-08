@@ -14,9 +14,6 @@ let package = Package(
         .target(
             name: "TMSileroVAD",
             path: "Sources/TMSileroVAD",
-            exclude: [
-                "Internal/.gitkeep"
-            ],
             resources: [
                 .copy("Resources/silero-vad-unified-v6.0.0.mlmodelc"),
                 .copy("Resources/silero-vad-unified-256ms-v6.0.0.mlmodelc")
