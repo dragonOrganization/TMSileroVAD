@@ -56,12 +56,21 @@ public final class TMSileroVAD {
 
     @discardableResult
     public func processAudioBuffer(_ buffer: AVAudioPCMBuffer) throws -> [TMSileroVADEvent] {
-        let resampled = try resampler.resample(buffer)
-        return try processPCM(resampled)
+        let events = try runLocked {
+            let resampled = try resampler.resample(buffer)
+            return try runProcess(samples: resampled)
+        }
+        dispatchToDelegate(events)
+        return events
     }
 
     // MARK: private
 
+    /// Pumps PCM through the framebuffer → runner → state machine pipeline.
+    ///
+    /// **Failure semantics:** if `runner.predict` throws on chunk N, events accumulated from
+    /// chunks 0..N-1 are discarded along with the error. Callers cannot recover partial output;
+    /// resync the input audio (call `reset()`) before continuing.
     private func runProcess(samples: [Float]) throws -> [TMSileroVADEvent] {
         let chunks = frameBuffer.append(samples)
         var events: [TMSileroVADEvent] = []
@@ -90,7 +99,9 @@ public final class TMSileroVAD {
         }
     }
 
-    /// Test-only escape hatch — DO NOT export from the module.
+    /// Test-only escape hatch. `internal` so unit tests can inject a mock runner via
+    /// `@testable import`. Not part of the supported public API; do not invoke from
+    /// production code paths inside the module either.
     static func makeForTesting(
         config: TMSileroVADConfig,
         runner: TMSileroVADModelRunning,
