@@ -63,9 +63,7 @@ final class TMSileroVADCoreMLRunner: TMSileroVADModelRunning {
     func reset() {
         Self.zero(array: hiddenStateArray, count: spec.stateLength)
         Self.zero(array: cellStateArray, count: spec.stateLength)
-        for i in 0..<contextSamples.count {
-            contextSamples[i] = 0
-        }
+        contextSamples = [Float](repeating: 0, count: spec.contextLength)
     }
 
     func predict(chunk: [Float]) throws -> Float {
@@ -110,9 +108,12 @@ final class TMSileroVADCoreMLRunner: TMSileroVADModelRunning {
             throw TMSileroVADError.invalidModelOutput(reason: "missing new_cell_state")
         }
 
-        let probability = vadArray.dataPointer.assumingMemoryBound(to: Float.self)[0]
-        Self.copy(from: newHidden, to: hiddenStateArray, count: spec.stateLength)
-        Self.copy(from: newCell, to: cellStateArray, count: spec.stateLength)
+        let probability: Float = withExtendedLifetime(output) {
+            let p = vadArray.dataPointer.assumingMemoryBound(to: Float.self)[0]
+            Self.copy(from: newHidden, to: hiddenStateArray, count: spec.stateLength)
+            Self.copy(from: newCell, to: cellStateArray, count: spec.stateLength)
+            return p
+        }
 
         // Update 64-sample context to last samples of this chunk.
         let chunkTail = chunk.suffix(spec.contextLength)

@@ -26,12 +26,12 @@ final class CoreMLRunnerIntegrationTests: XCTestCase {
         let spec = TMSileroVADModelSpec.makeSpec(variant: .realtime32ms)
         let runner = try TMSileroVADCoreMLRunner(spec: spec, computeUnits: .cpuOnly)
 
-        var noise = [Float](repeating: 0, count: spec.chunkLength)
-        for i in 0..<noise.count {
-            noise[i] = Float.random(in: -0.3...0.3)
+        var signal = [Float](repeating: 0, count: spec.chunkLength)
+        for i in 0..<signal.count {
+            signal[i] = 0.3 * Float(sin(2.0 * .pi * 440.0 * Double(i) / 16_000.0))
         }
-        _ = try runner.predict(chunk: noise)
-        _ = try runner.predict(chunk: noise)
+        _ = try runner.predict(chunk: signal)
+        _ = try runner.predict(chunk: signal)
         let probWithState = try runner.predict(chunk: Array(repeating: 0, count: spec.chunkLength))
 
         runner.reset()
