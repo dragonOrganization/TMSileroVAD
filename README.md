@@ -29,10 +29,22 @@ specific HuggingFace revision for reproducibility.
 ### Swift Package Manager
 
 ```swift
-.package(path: "../TMSileroVAD")
+.package(url: "https://github.com/dragonOrganization/TMSileroVAD.git", from: "0.1.0")
 ```
 
 ### CocoaPods
+
+```ruby
+pod 'TMSileroVAD', :git => 'https://github.com/dragonOrganization/TMSileroVAD.git', :tag => 'v0.1.0'
+```
+
+### Local development
+
+If you're hacking on the Pod itself (not just consuming it), use the local path forms:
+
+```swift
+.package(path: "../TMSileroVAD")
+```
 
 ```ruby
 pod 'TMSileroVAD', :path => '../TMSileroVAD'

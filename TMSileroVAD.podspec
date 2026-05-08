@@ -7,10 +7,10 @@ Pod::Spec.new do |s|
     Supports two variants: 256 ms balanced (endpointing/ASR) and 32 ms realtime
     (low-latency barge-in). Built-in AVAudioConverter resampling. iOS 14+.
   DESC
-  s.homepage         = 'https://example.com/TMSileroVAD'
+  s.homepage         = 'https://github.com/dragonOrganization/TMSileroVAD'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'TalkMe' => 'ios@example.com' }
-  s.source           = { :git => 'https://example.com/TMSileroVAD.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/dragonOrganization/TMSileroVAD.git', :tag => "v#{s.version}" }
   s.ios.deployment_target = '14.0'
   s.swift_versions = ['5.9']
   s.source_files = 'Sources/TMSileroVAD/**/*.swift'
