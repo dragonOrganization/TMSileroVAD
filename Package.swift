@@ -14,6 +14,10 @@ let package = Package(
         .target(
             name: "TMSileroVAD",
             path: "Sources/TMSileroVAD",
+            exclude: [
+                "Internal/.gitkeep",
+                "Resources/.gitkeep"
+            ],
             resources: [
                 .copy("Resources/silero-vad-unified-v6.0.0.mlmodelc"),
                 .copy("Resources/silero-vad-unified-256ms-v6.0.0.mlmodelc")
@@ -22,7 +26,10 @@ let package = Package(
         .testTarget(
             name: "TMSileroVADTests",
             dependencies: ["TMSileroVAD"],
-            path: "Tests/TMSileroVADTests"
+            path: "Tests/TMSileroVADTests",
+            exclude: [
+                "Helpers/.gitkeep"
+            ]
         )
     ]
 )
