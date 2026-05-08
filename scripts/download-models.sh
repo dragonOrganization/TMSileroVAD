@@ -3,8 +3,14 @@
 # into Sources/TMSileroVAD/Resources/.
 #
 # Requires: git, git-lfs (HuggingFace stores .mlmodelc binary blobs via LFS).
+#
+# Pinned to a specific HuggingFace revision for reproducibility.
+# To update: bump HF_REVISION below, run this script, verify the resulting
+# .mlmodelc files still load correctly with the runner integration tests.
 
 set -euo pipefail
+
+HF_REVISION="37b639c370c8e1574281614b27b9811eb2577d24"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -18,10 +24,11 @@ fi
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
-echo "Cloning silero-vad-coreml from HuggingFace..."
-GIT_LFS_SKIP_SMUDGE=0 git clone --depth 1 \
+echo "Cloning silero-vad-coreml from HuggingFace at revision $HF_REVISION..."
+GIT_LFS_SKIP_SMUDGE=0 git clone \
     https://huggingface.co/FluidInference/silero-vad-coreml \
     "$TMP_DIR/silero"
+git -C "$TMP_DIR/silero" checkout "$HF_REVISION"
 
 mkdir -p "$RES_DIR"
 
